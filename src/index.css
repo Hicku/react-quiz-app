@@ -1,0 +1,44 @@
+.App {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-div {
+  height: 400px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* .quiz {
+} */
+
+.qna-div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-quest-div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.question {
+  font-size: 40px;
+}
+
+.answers {
+  font-size: 30px;
+}
