@@ -67,7 +67,7 @@ function App() {
   return (
     <div className="App">
       <div className="main-div">
-        <Quiz className="quiz" />
+        <Quiz className="quiz" QnA={questionsAndAnswers} />
       </div>
     </div>
   );

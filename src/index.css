@@ -42,3 +42,8 @@
 .answers {
   font-size: 30px;
 }
+
+.answer {
+  margin: 20px;
+  text-align: center;
+}
