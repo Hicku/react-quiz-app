@@ -2,13 +2,15 @@ import { useState } from "react";
 import Buttons from "./buttons";
 
 export default function QuestionsAndAnswer({ QnA }) {
-  const whiteBack = { background: "white" };
-  const changeBack = { background: "orange" };
+  const whiteBack = { background: "white", cursor: "pointer" };
+  const changeBack = { background: "orange", cursor: "pointer" };
+  const yellowBack = { background: "yellow" };
 
   const [question, setQuestion] = useState(null);
   const [usedQuestions, setUsedQuestions] = useState([]);
   const [quizStarted, setQuizStarted] = useState(false);
   const [answerColour, setAnswerColour] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [score, setScore] = useState(0);
 
   const startQuiz = () => {
@@ -21,8 +23,18 @@ export default function QuestionsAndAnswer({ QnA }) {
       (q) => !usedQuestions.includes(q)
     );
 
+    if (
+      question &&
+      selectedAnswer !== "" &&
+      selectedAnswer === question.correctAnswer
+    ) {
+      setScore(score + 1);
+    }
+
     if (remainingQuestions.length === 0) {
+      alert(`Your score is: ${score}`);
       setQuestion(null);
+      setScore(0);
       setUsedQuestions([]);
       return;
     }
@@ -34,8 +46,9 @@ export default function QuestionsAndAnswer({ QnA }) {
 
     setUsedQuestions([...usedQuestions, newQuestion]);
     setQuestion(newQuestion);
-    console.log(newQuestion);
   };
+
+  // Hanlde mouse hover
 
   const handleMouseEnter = (index) => {
     const newColours = [...answerColour];
@@ -43,9 +56,22 @@ export default function QuestionsAndAnswer({ QnA }) {
     setAnswerColour(newColours);
   };
 
+  // Handle leave
+
   const handleMouseLeave = (index) => {
     const newColors = [...answerColour];
-    newColors[index] = whiteBack;
+    if (newColors[index].background !== yellowBack.background) {
+      newColors[index] = whiteBack;
+    }
+    setAnswerColour(newColors);
+  };
+
+  const handleClickAnswer = (index) => {
+    const selected = question.answers[index];
+    const newColors = answerColour.map((color, i) => {
+      return i === index ? yellowBack : whiteBack;
+    });
+    setSelectedAnswer(selected);
     setAnswerColour(newColors);
   };
 
@@ -55,7 +81,7 @@ export default function QuestionsAndAnswer({ QnA }) {
         {question
           ? question.question
           : quizStarted
-          ? "You've finished! Your score is 10 out of 10"
+          ? `Would you like to try again?`
           : "Click 'Start' to begin the quiz"}
       </h3>
       {question && (
@@ -65,6 +91,7 @@ export default function QuestionsAndAnswer({ QnA }) {
               className="answer"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave(index)}
+              onClick={() => handleClickAnswer(index)}
               style={answerColour[index]}
               key={index}
             >
@@ -79,7 +106,7 @@ export default function QuestionsAndAnswer({ QnA }) {
         ) : question ? (
           <Buttons onClick={() => getRandomQuestion(QnA)}>Next</Buttons>
         ) : (
-          <Buttons onClick={() => getRandomQuestion(QnA)}>Try again</Buttons>
+          <Buttons onClick={() => getRandomQuestion(QnA)}>Go!</Buttons>
         )}
       </div>
     </div>
